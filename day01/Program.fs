@@ -1,0 +1,1 @@
+﻿printfn "Implement Day 1!"
