@@ -24,6 +24,28 @@ let updateMapWith
 let mapCountWhere (predicate: 'key -> 'value -> bool) =
   Map.count << Map.filter predicate
 
+let getAdjacentPoints ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) = 
+  List.choose (fun coord -> Map.tryFind coord grid)
+    [ (x, y-1); (x-1, y); (x+1, y); (x, y+1) ]
+
+let getAdjacentCoordinates ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) =
+  List.filter (fun coord -> Map.containsKey coord grid)
+    [ (x, y-1); (x-1, y); (x+1, y); (x, y+1) ]
+
+let getAdjacentPointsWithDiagonals ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) =
+  List.choose (fun coord -> Map.tryFind coord grid)
+    [ (x-1, y-1); (x, y-1); (x+1, y-1);
+      (x-1, y);             (x+1, y);
+      (x-1, y+1); (x, y+1); (x+1, y+1)
+    ]
+
+let getAdjacentCoordinatesWithDiagonals ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) =
+  List.filter (fun coord -> Map.containsKey coord grid)
+    [ (x-1, y-1); (x, y-1); (x+1, y-1);
+      (x-1, y);             (x+1, y);
+      (x-1, y+1); (x, y+1); (x+1, y+1)
+    ]
+
 let splitOnWithoutEmpties (str: string) (delimeter: char) =
   str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
 
