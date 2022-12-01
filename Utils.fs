@@ -2,15 +2,19 @@ module Utils
 
 open System
 
-type Coordinate = (int * int)
+let splitOnWithoutEmpties (str: string) (delimeter: char) =
+  str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
 
-let toCoordinateMap (xs: 'a seq seq) : Map<Coordinate, 'a> =
-  seq {
-    for y, row in Seq.indexed xs do
-    for x, v in Seq.indexed row do
-      yield ((x, y), v)
-  }
-  |> Map.ofSeq
+let splitOnWithoutEmptiesStr (str: string) (delimeter: string) =
+  str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
+
+let tryParse parser (str: string) =
+  match parser str with
+  | (true, v) -> Some v
+  | _ -> None
+
+let tryParseInt = tryParse Int32.TryParse
+let tryParseDateTime = tryParse DateTime.TryParse
 
 let updateMapWith
   (fn: 'value -> 'value)
@@ -24,37 +28,37 @@ let updateMapWith
 let mapCountWhere (predicate: 'key -> 'value -> bool) =
   Map.count << Map.filter predicate
 
-let getAdjacentPoints ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) = 
-  List.choose (fun coord -> Map.tryFind coord grid)
-    [ (x, y-1); (x-1, y); (x+1, y); (x, y+1) ]
+module Grid =
+  type Coordinate = (int * int)
 
-let getAdjacentCoordinates ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) =
-  List.filter (fun coord -> Map.containsKey coord grid)
-    [ (x, y-1); (x-1, y); (x+1, y); (x, y+1) ]
+  type 'a Grid = Map<Coordinate, 'a>
 
-let getAdjacentPointsWithDiagonals ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) =
-  List.choose (fun coord -> Map.tryFind coord grid)
-    [ (x-1, y-1); (x, y-1); (x+1, y-1);
-      (x-1, y);             (x+1, y);
-      (x-1, y+1); (x, y+1); (x+1, y+1)
-    ]
+  let toGrid (xs: 'a seq seq) : 'a Grid =
+    seq {
+      for y, row in Seq.indexed xs do
+      for x, v in Seq.indexed row do
+        yield ((x, y), v)
+    }
+    |> Map.ofSeq
 
-let getAdjacentCoordinatesWithDiagonals ((x, y): Coordinate) (grid: Map<Coordinate, 'a>) =
-  List.filter (fun coord -> Map.containsKey coord grid)
-    [ (x-1, y-1); (x, y-1); (x+1, y-1);
-      (x-1, y);             (x+1, y);
-      (x-1, y+1); (x, y+1); (x+1, y+1)
-    ]
+  let getAdjacentPoints ((x, y): Coordinate) (grid: 'a Grid) = 
+    List.choose (fun coord -> Map.tryFind coord grid)
+      [ (x, y-1); (x-1, y); (x+1, y); (x, y+1) ]
 
-let splitOnWithoutEmpties (str: string) (delimeter: char) =
-  str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
+  let getAdjacentCoordinates ((x, y): Coordinate) (grid: 'a Grid) =
+    List.filter (fun coord -> Map.containsKey coord grid)
+      [ (x, y-1); (x-1, y); (x+1, y); (x, y+1) ]
 
-let splitOnWithoutEmptiesStr (str: string) (delimeter: string) =
-  str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
+  let getAdjacentPointsWithDiagonals ((x, y): Coordinate) (grid: 'a Grid) =
+    List.choose (fun coord -> Map.tryFind coord grid)
+      [ (x-1, y-1); (x, y-1); (x+1, y-1);
+        (x-1, y);             (x+1, y);
+        (x-1, y+1); (x, y+1); (x+1, y+1)
+      ]
 
-let tryParse parser (str: string) =
-  match parser str with
-  | (true, v) -> Some v
-  | _ -> None
-
-let tryParseInt = tryParse Int32.TryParse
+  let getAdjacentCoordinatesWithDiagonals ((x, y): Coordinate) (grid: 'a Grid) =
+    List.filter (fun coord -> Map.containsKey coord grid)
+      [ (x-1, y-1); (x, y-1); (x+1, y-1);
+        (x-1, y);             (x+1, y);
+        (x-1, y+1); (x, y+1); (x+1, y+1)
+      ]
