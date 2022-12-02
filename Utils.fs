@@ -2,10 +2,10 @@ module Utils
 
 open System
 
-let splitOnWithoutEmpties (str: string) (delimeter: char) =
+let splitOnWithoutEmpties (delimeter: char) (str: string) =
   str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
 
-let splitOnWithoutEmptiesStr (str: string) (delimeter: string) =
+let splitOnWithoutEmptiesStr (delimeter: string) (str: string) =
   str.Split (delimeter, StringSplitOptions.RemoveEmptyEntries)
 
 let tryParse parser (str: string) =

@@ -12,7 +12,7 @@ let findOurTotalScore roundFn =
 
 // Part 1
 let playRoundPart1 runningScore (line: string) =
-  match splitOnWithoutEmptiesStr line " " with
+  match splitOnWithoutEmptiesStr " " line with
   // Draws 
   | [|"A"; "X"|] -> runningScore + 1 + 3
   | [|"B"; "Y"|] -> runningScore + 2 + 3
@@ -40,7 +40,7 @@ findOurTotalScore playRoundPart1
 // Z => win
 
 let playRoundPart2 runningScore (line: string) =
-  match splitOnWithoutEmptiesStr line " " with
+  match splitOnWithoutEmptiesStr " " line with
   // Rocks
   | [|"A"; "X"|] -> runningScore + 3
   | [|"A"; "Y"|] ->  runningScore + 1 + 3
