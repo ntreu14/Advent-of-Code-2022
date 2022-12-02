@@ -3,31 +3,31 @@
 let input = File.ReadAllLines "input.txt"
 
 let findOurTotalScore roundFn = 
-  input |> Array.fold roundFn 0
+  input |> Seq.sumBy roundFn
 
 // A, X => Rock (1) 
 // B, Y => Paper (2)
 // C, Z => Scissors (3)
 
 // Part 1
-let playRoundPart1 runningScore = 
+let playRoundPart1 = 
   function
   // Draws 
-  | "A X" -> runningScore + 1 + 3
-  | "B Y" -> runningScore + 2 + 3
-  | "C Z" -> runningScore + 3 + 3
+  | "A X" -> 4
+  | "B Y" -> 5
+  | "C Z" -> 6
 
   // Opponent wins
-  | "A Z" -> runningScore + 3
-  | "B X" -> runningScore + 1
-  | "C Y" -> runningScore + 2
+  | "A Z" -> 3
+  | "B X" -> 1
+  | "C Y" -> 2
 
   // Us win
-  | "C X" -> runningScore + 1 + 6
-  | "A Y" -> runningScore + 2 + 6
-  | "B Z" -> runningScore + 3 + 6
+  | "C X" -> 7
+  | "A Y" -> 8
+  | "B Z" -> 9
 
-  | other -> failwith $"Unexpected round %A{other}"
+  | other -> failwith $"Unexpected round %s{other}"
 
 findOurTotalScore playRoundPart1 
 |> printfn "Part 1: %i"
@@ -38,24 +38,24 @@ findOurTotalScore playRoundPart1
 // Y => draw
 // Z => win
 
-let playRoundPart2 runningScore =
+let playRoundPart2 =
   function
   // Rocks
-  | "A X" -> runningScore + 3
-  | "A Y" ->  runningScore + 1 + 3
-  | "A Z" -> runningScore + 2 + 6
+  | "A X" -> 3
+  | "A Y" -> 4
+  | "A Z" -> 8
 
   // Papers
-  | "B X" -> runningScore + 1
-  | "B Y" -> runningScore + 2 + 3
-  | "B Z" -> runningScore + 3 + 6
+  | "B X" -> 1
+  | "B Y" -> 5
+  | "B Z" -> 9
 
   // Scissors
-  | "C X" -> runningScore + 2
-  | "C Y" -> runningScore + 3 + 3
-  | "C Z" -> runningScore + 1 + 6
+  | "C X" -> 2
+  | "C Y" -> 6
+  | "C Z" -> 7
 
-  | other -> failwith $"Unexpected round %A{other}"
+  | other -> failwith $"Unexpected round %s{other}"
   
 findOurTotalScore playRoundPart2
 |> printfn "Part 2: %i"
