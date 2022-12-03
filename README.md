@@ -5,4 +5,4 @@ My solutions to Advent of Code 2022
 
 | Language | Total # of Days | Days Used |
 | :---:   | :---: | :---: |
-| F#      | 2     | 1, 2     |
+| F#      | 3     | 1, 2, 3 |
