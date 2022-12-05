@@ -6,7 +6,7 @@ let rawInstructions = File.ReadAllLines "instructions.txt"
 let rawStacks = File.ReadAllLines "stacks.txt" |> Seq.rev // Reverse to get stack order correct
 
 type Instruction = {
-  MovecrateCount: int
+  MoveCrateCount: int
   FromStack: int
   ToStack: int
 }
@@ -15,7 +15,7 @@ let parseInstrcutions (line: string) =
   match splitOnWithoutEmptiesStr " " line with
   | [|"move"; crateCount; "from"; fromStack; "to"; toStack |] ->
     
-    { MovecrateCount=int crateCount
+    { MoveCrateCount=int crateCount
       FromStack=int fromStack 
       ToStack=int toStack }    
   
@@ -43,7 +43,7 @@ let parseStacks accStacks (line: string) =
 let runInstructions (stacks: Map<int, string Stack>) (instruction: Instruction) =
   let cratesToMove = 
     seq {
-      for _ = 1 to instruction.MovecrateCount do
+      for _ = 1 to instruction.MoveCrateCount do
         yield!
           Map.tryFind instruction.FromStack stacks
           |> Option.map (fun s -> s.Pop())
