@@ -29,13 +29,13 @@ let addCrateToStack (stacks: Map<int, string Stack>) (stack, crate) =
     stacks
 
 let parseStacks accStacks (line: string) =
-  let maybeParseStack i (maybeCrate: string) =
+  let maybeParseCrate i (maybeCrate: string) =
     match maybeCrate.Replace("[", "").Replace("]", "") with
     | "-" -> None
     | crate -> Some (i + 1, crate)
 
   splitOnWithoutEmptiesStr " " line
-  |> Seq.mapi maybeParseStack
+  |> Seq.mapi maybeParseCrate
   |> Seq.choose id
   |> Seq.fold addCrateToStack accStacks
 
