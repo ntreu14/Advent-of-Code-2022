@@ -51,8 +51,8 @@ let runInstructions (stacks: Map<int, string Stack>) (instruction: Instruction) 
     }
     // |> Seq.rev
 
-  let movecrates s crate = addCrateToStack s (instruction.ToStack, crate)
-  cratesToMove |> Seq.fold movecrates stacks
+  let moveCrates s crate = addCrateToStack s (instruction.ToStack, crate)
+  cratesToMove |> Seq.fold moveCrates stacks
 
 let findTopCrates (stacks: Map<int, string Stack>) =
   seq { 
