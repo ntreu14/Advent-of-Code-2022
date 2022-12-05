@@ -39,7 +39,7 @@ let parseStacks accStacks (line: string) =
   |> Seq.choose id
   |> Seq.fold addCrateToStack accStacks
 
-// For part 2 solution, uncomment the `|> Seq.rev` in the function below.
+// For part 2 solution, uncomment the `Seq.rev` in the function below.
 let runInstructions (stacks: Map<int, string Stack>) (instruction: Instruction) =
   seq {
       for _ = 1 to instruction.MoveCrateCount do
@@ -48,12 +48,12 @@ let runInstructions (stacks: Map<int, string Stack>) (instruction: Instruction) 
           |> Option.map (fun s -> s.Pop())
           |> Option.toList
     }
-    //|> Seq.rev
+    // |> Seq.rev
     |> Seq.fold (fun s crate -> addCrateToStack s (instruction.ToStack, crate)) stacks
 
 let findTopCrates (stacks: Map<int, string Stack>) =
   seq { 
-    for stack in Map.keys stacks do // we know there are 9 stacks
+    for stack = 1 to 9 do // we know there are 9 stacks
       yield
         Map.find stack stacks 
         |> fun s -> s.Peek()
