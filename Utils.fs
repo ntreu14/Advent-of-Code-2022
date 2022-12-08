@@ -62,3 +62,28 @@ module Grid =
         (x-1, y);             (x+1, y);
         (x-1, y+1); (x, y+1); (x+1, y+1)
       ]
+
+module Result =
+  let failIfError =
+    function
+    | Ok v -> v
+    | Error err -> failwith err
+
+module List =
+  open System.Collections.Generic
+
+  let takeUntil endCondition xs =
+    let list = List()
+
+    let rec aux endCondition =
+      function
+      | [] -> List.ofSeq list 
+      | x::rest -> 
+        list.Add x
+        
+        if endCondition x then
+          List.ofSeq list
+        else
+          aux endCondition rest 
+    
+    aux endCondition xs 
