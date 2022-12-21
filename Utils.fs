@@ -72,18 +72,11 @@ module Result =
 module List =
   open System.Collections.Generic
 
-  let takeUntil endCondition xs =
-    let list = List()
-
-    let rec aux endCondition =
-      function
-      | [] -> List.ofSeq list 
-      | x::rest -> 
-        list.Add x
-        
+  let rec takeUntil endCondition =
+    function
+    | [] -> []
+    | x::rest ->
         if endCondition x then
-          List.ofSeq list
+          [x]
         else
-          aux endCondition rest 
-    
-    aux endCondition xs 
+          x :: takeUntil endCondition rest
