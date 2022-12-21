@@ -70,8 +70,6 @@ module Result =
     | Error err -> failwith err
 
 module List =
-  open System.Collections.Generic
-
   let rec takeUntil endCondition =
     function
     | [] -> []
